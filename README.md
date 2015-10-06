@@ -1,4 +1,4 @@
-# megablob
+# MEGABLOB
 
 Utilities for React + Bacon MEGABLOB development
 
@@ -68,6 +68,7 @@ export default React.createClass({
 ### `startApp :: (state, ((state) => property), ((state) =>)) => `
 
 This function takes three arguments:
+
 1. Initial state of the application
 2. Function which takes state as an input value and returns "application state property" `Bacon.Property` (aka MEGABLOB)
 3. Function which is called every time when the "application state" changes. The new state is given as a parameter

@@ -8,7 +8,7 @@
     "dist": "babel src --source-maps inline --out-dir lib",
     "test": "npm run lint && npm run tape | faucet",
     "tape": "babel-tape-runner 'test/**/*Test.js'",
-    "lint": "eslint src"
+    "lint": "eslint src test"
   },
   "repository": {
     "type": "git",

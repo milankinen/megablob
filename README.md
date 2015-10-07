@@ -30,7 +30,7 @@ const {<functions/components...>} = require("megablob")
 
 ## API
 
-### `createAction :: () => fn`
+### `createAction`
 
 Creates a new action that can be called as normal function taking
 single argument. Internally this uses `Bacon.Bus` and `.push` and
@@ -65,7 +65,9 @@ export default React.createClass({
 })
 ```
 
-### `startApp :: (state, ((state) => property), ((state) =>)) => `
+### `startApp`
+
+    (state, Function<state,Property<state>>, Function<state,_>) => _
 
 This function takes three arguments:
 
@@ -97,6 +99,35 @@ const appState = require("./appState")
 startApp(window.INITIAL_STATE, appState, state => {
   React.render(<MyApp {...state} />, document.getElementById("app"))
 })
+``` 
+
+### `flatUpdate`
+
+    flatUpdate :: (state, [Observable+, [Function<(state,args),Observable<A>>, Function<(state, A),newState>]]+) => Observable<state>
+
+This function is the successor of **[Bacon.update](https://github.com/baconjs/bacon.js/#bacon-update)**.
+It is fully backwards compatible with `Bacon.update` syntax but it also enables "2-stage" async state
+updating by using two separate functions
+
+1. The first function receives the current state and triggering event stream values.
+It can returns an (asynchronous) stream.
+2. The second function processes the values from the first stream and synchronously
+returns the new state based on those values
+
+Usage example:
+
+```javascript
+const stateP = flatUpdate(initialState,
+ [event1S], (state, newState) => newState,                   // supports normal Bacon.update
+ [event2S], (state, newState) => Bacon.later(100, newState)  // supports delayed state updating
+ [event3S], [submitForm, handleSubmitResult]                 // supports 2-stage state updating
+)
+function submitForm(state, event) {
+  return Bacon.later(1000, doSomethingWith(state, event))  // simulate "server"
+}
+function handleSubmitResult(state, resultFromServer) {
+ return {...state, ...resultFromServer}   // resultFromServer === doSomething(state, event)
+}
 ```
 
 ## License

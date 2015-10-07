@@ -99,18 +99,18 @@ const appState = require("./appState")
 startApp(window.INITIAL_STATE, appState, state => {
   React.render(<MyApp {...state} />, document.getElementById("app"))
 })
-``` 
+```
 
 ### `flatUpdate`
 
     flatUpdate :: (state, [Observable+, [Function<(state,args),Observable<A>>, Function<(state, A),newState>]]+) => Observable<state>
 
-This function is the successor of **[Bacon.update](https://github.com/baconjs/bacon.js/#bacon-update)**.
+This function is a successor of **[Bacon.update](https://github.com/baconjs/bacon.js/#bacon-update)**.
 It is fully backwards compatible with `Bacon.update` syntax but it also enables "2-stage" async state
 updating by using two separate functions
 
 1. The first function receives the current state and triggering event stream values.
-It can returns an (asynchronous) stream.
+It can return an (asynchronous) stream whose value(s) is processed by the 2nd function.
 2. The second function processes the values from the first stream and synchronously
 returns the new state based on those values
 

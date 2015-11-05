@@ -4,3 +4,4 @@ node_modules
 lib
 *.log
 npm-debug*
+bundle.*
